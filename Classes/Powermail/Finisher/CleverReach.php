@@ -12,6 +12,7 @@ namespace WapplerSystems\Cleverreach\Powermail\Finisher;
 use In2code\Powermail\Domain\Model\Answer;
 use In2code\Powermail\Domain\Model\Mail;
 use In2code\Powermail\Finisher\AbstractFinisher;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use WapplerSystems\Cleverreach\CleverReach\Api;
 use WapplerSystems\Cleverreach\Domain\Model\Receiver;
 
@@ -33,12 +34,12 @@ class CleverReach extends AbstractFinisher
 
 
 
-    /**
-     * Because of T3 7 compatibility use this class
-     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $typoScriptService;
+//    /**
+//     * Because of T3 7 compatibility use this class
+//     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
+//     * @TYPO3\CMS\Extbase\Annotation\Inject
+//     */
+//    protected $typoScriptService;
 
 
     /**
@@ -72,7 +73,6 @@ class CleverReach extends AbstractFinisher
      */
     public function cleverreachFinisher()
     {
-
         if ($this->email === '') return;
 
         $formValues = $this->getFormValues($this->getMail());
@@ -90,23 +90,18 @@ class CleverReach extends AbstractFinisher
         }
 
         if ($this->settings['main']['cleverreach'] === Api::MODE_OPTIN) {
-
             $receiver = new Receiver($this->email,$formValues);
             $this->api->addReceiversToGroup($receiver,$groupId);
             $this->api->sendSubscribeMail($this->email,$formId,$groupId);
 
         } else if ($this->settings['main']['cleverreach'] === Api::MODE_OPTOUT) {
-
             if ($this->configurationService->getUnsubscribeMethod() === 'doubleoptout') {
-
                 $this->api->sendUnsubscribeMail($this->email);
 
             } else if ($this->configurationService->getUnsubscribeMethod() === 'delete') {
-
                 $this->api->removeReceiversFromGroup($this->email);
 
             } else {
-
                 $this->api->disableReceiversInGroup($this->email, $groupId);
 
             }
@@ -123,11 +118,11 @@ class CleverReach extends AbstractFinisher
      */
     public function initializeFinisher()
     {
-        $configuration = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings);
-        if (!empty($configuration['dbEntry.'])) {
-            $this->configuration = $configuration['dbEntry.'];
-        }
-
+//        $configuration = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings);
+//        if (!empty($configuration['dbEntry.'])) {
+//            $this->configuration = $configuration['dbEntry.'];
+//        }
+//
         $this->email = $this->findSenderEmail($this->mail);
     }
 
