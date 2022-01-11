@@ -116,7 +116,7 @@ class CleverReach extends AbstractFinisher
     /**
      * Initialize
      */
-    public function initializeFinisher()
+    public function initializeFinisher(): void
     {
 //        $configuration = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings);
 //        if (!empty($configuration['dbEntry.'])) {
