@@ -90,20 +90,19 @@ class CleverReach extends AbstractFinisher
         }
 
         if ($this->settings['main']['cleverreach'] === Api::MODE_OPTIN) {
-            $receiver = new Receiver($this->email,$formValues);
-            $this->api->addReceiversToGroup($receiver,$groupId);
-            $this->api->sendSubscribeMail($this->email,$formId,$groupId);
+            $receiver = new Receiver($this->email, $formValues);
+            $this->api->addReceiversToGroup($receiver, $groupId);
+            $this->api->sendSubscribeMail($this->email, $formId, $groupId);
 
-        } else if ($this->settings['main']['cleverreach'] === Api::MODE_OPTOUT) {
-            if ($this->configurationService->getUnsubscribeMethod() === 'doubleoptout') {
+        } elseif ($this->settings['main']['cleverreach'] === Api::MODE_OPTOUT) {
+            if($this->configurationService->getUnsubscribeMethod() === 'doubleoptout') {
                 $this->api->sendUnsubscribeMail($this->email);
 
-            } else if ($this->configurationService->getUnsubscribeMethod() === 'delete') {
+            } elseif ($this->configurationService->getUnsubscribeMethod() === 'delete') {
                 $this->api->removeReceiversFromGroup($this->email);
 
             } else {
                 $this->api->disableReceiversInGroup($this->email, $groupId);
-
             }
 
         }
